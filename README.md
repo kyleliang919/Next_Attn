@@ -17,7 +17,7 @@ python scripts/download_tokenizer.py --repo_id meta-llama/Llama-3.1-8B --hf_toke
 ```
 
 ```
-CONFIG_FILE="./torchtitan/models/llama3/train_configs/llama3_8b.toml" ./run_train.sh
+CONFIG_FILE="./models/llama3/train_configs/llama3_8b.toml" ./run_train.sh
 ```
 
 
@@ -28,5 +28,5 @@ python scripts/download_tokenizer.py --repo_id deepseek-ai/deepseek-moe-16b-chat
 
 ```
 # 16B parameter model: adapted from older 16B parameter model from https://huggingface.co/deepseek-ai/deepseek-moe-16b-base
-CONFIG_FILE="./torchtitan/models/deepseek_v3/train_configs/deepseek_v3_16b.toml" ./run_train.sh
+CONFIG_FILE="./models/deepseek_v3/train_configs/deepseek_v3_16b.toml" ./run_train.sh
 ```
