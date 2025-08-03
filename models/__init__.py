@@ -9,3 +9,5 @@
 # will be called.
 import torchtitan.models.deepseek_v3  # noqa: F401
 import torchtitan.models.llama3  # noqa: F401
+import torchtitan.models.llama3_nsa
+import torchtitan.models.deepseek_v3_nsa
