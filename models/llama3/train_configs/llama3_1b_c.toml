@@ -3,7 +3,7 @@
 
 [job]
 dump_folder = "./outputs"
-description = "Llama 3 1B training"
+description = "Llama 3 1B training cautious"
 
 [profiling]
 enable_profiling = true
