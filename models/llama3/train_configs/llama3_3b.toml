@@ -17,7 +17,7 @@ save_tb_folder = "tb"
 
 [model]
 name = "llama3"
-flavor = "8B"
+flavor = "3B"
 tokenizer_path = "./assets/tokenizer/Llama-3.1-8B"
 # converters = ["float8"]
 
