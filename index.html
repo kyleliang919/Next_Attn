@@ -18,16 +18,60 @@
   <main class="mx-auto max-w-3xl px-6 py-10 prose prose-zinc prose-lg">
     <h1 class="text-3xl font-extrabold tracking-tight">The Ultimate <span class="text-indigo-600">Fast Weights</span></h1>
     <p class="text-zinc-600 mb-8">A unifying, attention-flavored view of SGD, Momentum, Adam/AdamW, RMSProp, Adagrad, Lion, and Shampoo.</p>
+
     <p>
-      During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. The effective weights for input $x$ can be expressed as:
+      During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. 
+      The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. 
+      The effective weights for input $x$ can be expressed as:
     </p>
+
     <p class="text-center">$$\mathcal{F}(x) = (W_0 + \Delta W) x$$</p>
+
     <p>If $\Delta W$ decomposes into rank-1 contributions, we connect it to linear attention mechanisms:</p>
     <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i'^T x) = W_0x + \text{LinearAttn}(E, X', x)$$</p>
+
+    <section id="references" class="mt-16">
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">References</h2>
+      <ol class="list-decimal pl-6 space-y-2 text-zinc-700">
+        <li>
+          Schmidhuber, J. (1992). <em>Learning to control fast-weight memories: An alternative to dynamic recurrent networks</em>. Neural Computation, 4(1), 131–139.
+        </li>
+        <li>
+          Ba, J. L., Kiros, J. R., & Hinton, G. E. (2016). <em>Layer Normalization</em>. arXiv preprint arXiv:1607.06450.
+        </li>
+        <li>
+          <!-- Placeholder for your new citation -->
+          [Add more references here...]
+        </li>
+      </ol>
+    </section>
+    
+    <!-- Citation block -->
+    <section id="citation" class="mt-16">
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Citation</h2>
+      <p>
+        If you would like to cite this blog post, you can use the following BibTeX entry:
+      </p>
+
+      <pre class="bg-zinc-100 text-zinc-800 p-4 rounded-lg overflow-x-auto text-sm"><code>
+@misc{liang2025fastweights,
+  title        = {The Ultimate Fast Weights},
+  author       = {Liang, Kaizhao},
+  year         = {2025},
+  howpublished = {\url{https://kyleliang919.github.io/fastweights}},
+  note         = {Accessed: \today}
+}
+      </code></pre>
+    </section>
+
   </main>
+
   <footer class="mx-auto max-w-3xl px-6 pb-12 text-sm text-zinc-500">
     © <span id="year"></span> — Optimizers as Fast Weights
   </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
