@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Optimizers as Fast Weights — Blog Post</title>
+  <meta name="description" content="Viewing SGD, Momentum, Adam, and others as fast-weight updates accumulated over the dataset." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body class="bg-white text-zinc-900 antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-10 prose prose-zinc prose-lg">
+    <h1 class="text-3xl font-extrabold tracking-tight">Optimizers as <span class="text-indigo-600">Fast Weights</span></h1>
+    <p class="text-zinc-600 mb-8">A unifying, attention-flavored view of SGD, Momentum, Adam/AdamW, RMSProp, Adagrad, Lion, and Shampoo.</p>
+    <p>
+      During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. The effective weights for input $x$ can be expressed as:
+    </p>
+    <p class="text-center">$$\mathcal{F}(x) = (W_0 + \Delta W) x$$</p>
+    <p>If $\Delta W$ decomposes into rank-1 contributions, we connect it to linear attention mechanisms:</p>
+    <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i'^T x) = W_0x + \text{LinearAttn}(E, X', x)$$</p>
+    <h2>View on GitHub Pages</h2>
+    <p>
+      1. Create a GitHub repository named <code>yourusername.github.io</code>.<br>
+      2. Save this file as <code>index.html</code> and add it to the repo root.<br>
+      3. Commit and push using:
+    </p>
+    <pre><code>git init
+git add index.html
+git commit -m "Publish fast-weight blog"
+git branch -M main
+git remote add origin https://github.com/yourusername/yourusername.github.io.git
+git push -u origin main</code></pre>
+    <p>
+      4. Visit <a href="https://yourusername.github.io" class="text-indigo-600 underline">https://yourusername.github.io</a> after a few minutes.<br>
+      For project pages, place <code>index.html</code> in a <code>docs/</code> folder and enable GitHub Pages in repo settings.
+    </p>
+  </main>
+  <footer class="mx-auto max-w-3xl px-6 pb-12 text-sm text-zinc-500">
+    © <span id="year"></span> — Optimizers as Fast Weights
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
