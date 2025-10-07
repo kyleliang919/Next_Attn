@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Optimizers as Fast Weights — Blog Post</title>
-  <meta name="description" content="Viewing SGD, Momentum, Adam, and others as fast-weight updates accumulated over the dataset." />
+  <title>The Ultimate Fast Weights — Blog Post</title>
+  <meta name="description" content="Viewing Optimizer Steps as Fast Weight Updates" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     window.MathJax = {
@@ -16,19 +16,46 @@
 </head>
 <body class="bg-white text-zinc-900 antialiased">
   <main class="mx-auto max-w-3xl px-6 py-10 prose prose-zinc prose-lg">
-    <h1 class="text-3xl font-extrabold tracking-tight">The Ultimate <span class="text-indigo-600">Fast Weights</span></h1>
-    <p class="text-zinc-600 mb-8">A unifying, attention-flavored view of SGD, Momentum, Adam/AdamW, RMSProp, Adagrad, Lion, and Shampoo.</p>
+    <h1 class="text-3xl font-extrabold tracking-tight">Your Linear Layers are Secretly <span class="text-indigo-600">Fast Weights</span></h1>
+    <p class="text-zinc-600 mb-8">A unifying view of fast weights and optimizers</p>
+    <section>
+    <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Rant on Hybrid Anything</h2>
+    <figure style="float: right; width: 45%; margin: 0 0 1em 1em;">
+        <img 
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Kiev_1985_DN-SN-86-00684r.jpg/800px-Kiev_1985_DN-SN-86-00684r.jpg"
+          alt="Heavy aircraft carrying cruiser Kiev, USSR, 1985."
+          style="width: 80%; border-radius: 6px;"
+        >
+        <figcaption style="font-size: 0.9em; color: #555; text-align: center;">
+          Heavy aircraft carrying cruiser <strong>Kiev</strong>, USSR, 1985.
+        </figcaption>
+      </figure>
+    <p>Before we begin, let's take a little detour into Post World War II warship designs. There was once a fierce debate, "Aircraft Carriers or Battleships?" We all know how it ended. The last battleship USS Missouri (BB-63) turned into a floating museum. Yet, before that, there was a glimpse of hope. "Why not a hybrid ship?" asked the young naval officer. </p>
+    <p>Thus was born the aircraft cruiser, a strange fusion of heavy guns and a flight deck. In theory, it could dominate both sea and sky; in practice, its guns shook the deck so badly that aircraft could barely take off. The concept soon proved unworkable, and these hybrids faded into history — bold, ambitious, and ultimately doomed experiments of naval design.<br>
+    </p> 
+  </section>
 
-    <p>
-      During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. 
-      The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. 
-      The effective weights for input $x$ can be expressed as:
-    </p>
+  <section>
+  <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">So Why Hybrid Models?</h2>
+  <p>Modern LLMs are largely based on Self-Attention Transformers. I said largely because of recent models that incorporated both attention layers and linear attention (fast weight) variants. For example, Qwen3-Next mixes Attention Layers with Gated DeltaNet Layers in 3:1 ratio. These hybrid designs are intended to provide efficiency without sacrificing too much on modeling capability along sequence dimension. Ultimately, like many of the hybrid systems, it becomes a matter of <strong>trade-off</strong>. Compromises were made here and there, yet hard to make everyone happy.
+  </p>
+  <p>Setting efficiency aside, another purpose of fast weight is to enable models to learn continously. Imagine the model simply generates and reads in new tokens and its parameters get updated by those tokens at the same time. In principle, this is somewhat achieveable with the current sequence-level fast weight designs. However, it still feels <strong>limited</strong>, <strong>unnatural</strong> and more importantly <strong>inelegant</strong>.</p>
+  <p>Then, "What are we going to do?" asked the young padawan. It turns out the answer has been hidden in the plain sight. We just don't know how to tap into its power, yet. </p>
+  </section>
+    
+  <section>
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Your Linear Layers are Already Secretly Fast Weights</h2>
+      <p>
+        During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. 
+        The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. 
+        The effective weights for input $x$ can be expressed as:
+      </p>
 
-    <p class="text-center">$$\mathcal{F}(x) = (W_0 + \Delta W) x$$</p>
+      <p class="text-center">$$\mathcal{F}(x) = (W_0 + \Delta W) x$$</p>
 
-    <p>If $\Delta W$ decomposes into rank-1 contributions, we connect it to linear attention mechanisms:</p>
-    <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i'^T x) = W_0x + \text{LinearAttn}(E, X', x)$$</p>
+      <p>If $\Delta W$ decomposes into rank-1 contributions, we connect it to linear attention mechanisms:</p>
+      <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i'^T x) = W_0x + \text{LinearAttn}(E, X', x)$$</p>
+    </section>
 
     <section id="references" class="mt-16">
       <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">References</h2>
@@ -37,15 +64,16 @@
           Schmidhuber, J. (1992). <em>Learning to control fast-weight memories: An alternative to dynamic recurrent networks</em>. Neural Computation, 4(1), 131–139.
         </li>
         <li>
-          Ba, J. L., Kiros, J. R., & Hinton, G. E. (2016). <em>Layer Normalization</em>. arXiv preprint arXiv:1607.06450.
+          Yang, S., Kautz, J., & Hatamizadeh, A. (2024). <em>Gated delta networks: Improving mamba2 with delta rule</em>. arXiv preprint arXiv:2412.06464.
         </li>
         <li>
-          <!-- Placeholder for your new citation -->
-          [Add more references here...]
+          Yang, A., Li, A., Yang, B., Zhang, B., Hui, B., Zheng, B., ... & Qiu, Z. (2025). <em>Qwen3 technical report</em>. arXiv preprint arXiv:2505.09388.
         </li>
+        <li>Irie, K., Csordás, R., & Schmidhuber, J. (2022, June). <em>The dual form of neural networks revisited: Connecting test time predictions to training patterns via spotlights of attention</em>. In International Conference on Machine Learning (pp. 9639-9659). PMLR.</li>
+        <li>Dai, D., Sun, Y., Dong, L., Hao, Y., Ma, S., Sui, Z., & Wei, F. (2022). <em>Why can gpt learn in-context? language models implicitly perform gradient descent as meta-optimizers</em>. arXiv preprint arXiv:2212.10559.</li>
       </ol>
     </section>
-    
+
     <!-- Citation block -->
     <section id="citation" class="mt-16">
       <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Citation</h2>
@@ -58,7 +86,7 @@
   title        = {The Ultimate Fast Weights},
   author       = {Liang, Kaizhao},
   year         = {2025},
-  howpublished = {\url{https://kyleliang919.github.io/fastweights}},
+  howpublished = {\url{https://kyleliang919.github.io/The_Ultimate_Fast_Weights/}},
   note         = {Accessed: \today}
 }
       </code></pre>
