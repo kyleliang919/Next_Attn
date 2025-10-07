@@ -6,55 +6,69 @@
   <title>The Ultimate Fast Weights — Blog Post</title>
   <meta name="description" content="Viewing Optimizer Steps as Fast Weight Updates" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <style>
+        /* Optional: for better styling of the code block */
+        body { font-family: sans-serif; background-color: #f4f4f4; }
+        pre[class*="language-"] {
+            padding: 1em;
+            margin: .5em 0;
+            overflow: auto;
+            border-radius: 0.3em;
+        }
+  </style>
 </head>
 <body class="bg-white text-zinc-900 antialiased">
   <main class="mx-auto max-w-3xl px-6 py-10 prose prose-zinc prose-lg">
     <h1 class="text-3xl font-extrabold tracking-tight">Your Linear Layers are Secretly <span class="text-indigo-600">Fast Weights</span></h1>
-    <p class="text-zinc-600 mb-8">A unifying view of fast weights and optimizers</p>
+    <p class="text-zinc-600 mb-8">A unifying view of fast weights and Gradient Descent</p>
     <section>
-    <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Rant on Hybrid Anything</h2>
-    <figure style="float: right; width: 45%; margin: 0 0 1em 1em;">
-        <img 
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Kiev_1985_DN-SN-86-00684r.jpg/800px-Kiev_1985_DN-SN-86-00684r.jpg"
-          alt="Heavy aircraft carrying cruiser Kiev, USSR, 1985."
-          style="width: 80%; border-radius: 6px;"
-        >
-        <figcaption style="font-size: 0.9em; color: #555; text-align: center;">
-          Heavy aircraft carrying cruiser <strong>Kiev</strong>, USSR, 1985.
-        </figcaption>
-      </figure>
-    <p>Before we begin, let's take a little detour into Post World War II warship designs. There was once a fierce debate, "Aircraft Carriers or Battleships?" We all know how it ended. The last battleship USS Missouri (BB-63) turned into a floating museum. Yet, before that, there was a glimpse of hope. "Why not a hybrid ship?" asked the young naval officer. </p>
-    <p>Thus was born the aircraft cruiser, a strange fusion of heavy guns and a flight deck. In theory, it could dominate both sea and sky; in practice, its guns shook the deck so badly that aircraft could barely take off. The concept soon proved unworkable, and these hybrids faded into history — bold, ambitious, and ultimately doomed experiments of naval design.<br>
-    </p> 
-  </section>
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Rant on Hybrid Anything</h2>
+      <figure style="float: right; width: 45%; margin: 0 0 1em 1em;">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Kiev_1985_DN-SN-86-00684r.jpg/800px-Kiev_1985_DN-SN-86-00684r.jpg"
+            alt="Heavy aircraft carrying cruiser Kiev, USSR, 1985."
+            style="width: 80%; border-radius: 6px;"
+          >
+          <figcaption style="font-size: 0.9em; color: #555; text-align: center;">
+            Heavy aircraft carrying cruiser <strong>Kiev</strong>, USSR, 1985.
+          </figcaption>
+        </figure>
+      <p>Before we begin, let's take a little detour into Post World War II warship designs. There was once a fierce debate, "Aircraft Carriers or Battleships?" We all know how it ended. The last battleship USS Missouri (BB-63) turned into a floating museum. Yet, before that, there was a glimpse of hope. "Why not a hybrid ship?" asked the young naval officer. </p>
+      <p>Thus was born the aircraft cruiser, a strange fusion of heavy guns and a flight deck. In theory, it could dominate both sea and sky; in practice, its guns shook the deck so badly that aircraft could barely take off. The concept soon proved unworkable, and these hybrids faded into history — bold, ambitious, and ultimately doomed experiments of naval design.<br>
+      </p> 
+    </section>
 
-  <section>
-  <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">So Why Hybrid Models?</h2>
-  <p>Modern LLMs are largely based on Self-Attention Transformers. I said largely because of recent models that incorporated both attention layers and linear attention (fast weight) variants. For example, Qwen3-Next mixes Attention Layers with Gated DeltaNet Layers in 3:1 ratio. These hybrid designs are intended to provide efficiency without sacrificing too much on modeling capability along sequence dimension. Ultimately, like many of the hybrid systems, it becomes a matter of <strong>trade-off</strong>. Compromises were made here and there, yet hard to make everyone happy.
-  </p>
-  <p>Setting efficiency aside, another purpose of fast weight is to enable models to learn continously. Imagine the model simply generates and reads in new tokens and its parameters get updated by those tokens at the same time. In principle, this is somewhat achieveable with the current sequence-level fast weight designs. However, it still feels <strong>limited</strong>, <strong>unnatural</strong> and more importantly <strong>inelegant</strong>.</p>
-  <p>Then, "What are we going to do?" asked the young padawan. It turns out the answer has been hidden in the plain sight. We just don't know how to tap into its power, yet. </p>
-  </section>
-    
-  <section>
-      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Your Linear Layers are Already Secretly Fast Weights</h2>
-      <p>
-        During one pass over the dataset, popular optimizers accumulate a transient parameter update $\Delta W$ from gradients. 
-        The base weights $W_0$ store long-term knowledge, while $\Delta W$ represents short-term adaptation. 
-        The effective weights for input $x$ can be expressed as:
+    <section>
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">So Why Hybrid Models?</h2>
+      <p>Modern LLMs are largely based on Self-Attention Transformers. I said largely because of recent models that incorporated both attention layers and linear attention (fast weight) variants. For example, Qwen3-Next mixes Attention Layers with Gated DeltaNet Layers in 3:1 ratio. These hybrid designs are intended to provide efficiency without sacrificing too much on modeling capability along sequence dimension. Ultimately, like many of the hybrid systems, it becomes a matter of <strong>trade-off</strong>. Compromises were made here and there, yet hard to make everyone happy.
       </p>
-
+      <p>Setting efficiency aside, another purpose of fast weight is to enable models to learn continously. Imagine the model simply generates and reads in new tokens and its parameters get updated by those tokens at the same time. In principle, this is somewhat achieveable with the current sequence-level fast weight designs. However, it still feels <strong>limited</strong>, <strong>unnatural</strong> and more importantly <strong>inelegant</strong>.</p>
+      <p>Then, "What are we going to do?" asked the young padawan. It turns out the answer has been hidden in the plain sight. We just don't know how to tap into its power, yet. </p>
+    </section>
+    
+    <section>
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Your Linear Layers are Secretly Fast Weights</h2>
+      <p>
+        Imagine a Linear Layer as follows,
+      </p>
       <p class="text-center">$$\mathcal{F}(x) = (W_0 + \Delta W) x$$</p>
+      <p> Running the good old backpropgation: </p>
+      <p class="text-center">$$\Delta W = \sum_i e_i \otimes x_i, \text{where } e_i \text{ is the loss/output gradient}$$</p>
+      <p>Doesn't this look familiar? Precisely, with a little alegbra, gradient descent on linear layer can be seen as running fast weight updates on the whole training dataset</p>
+      <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i^T x) = W_0x + \text{LinearAttn}(E, X, x)$$</p>
+      We have fast weight memory built-in within our models all these times and we know the mechanism of its update. So why don't we utilize them? Why do we train our models and then freeze the parameters? <br>
+      One obvious reason is that backpropgation is expensive. Modeling and approximating <em> e </em> is expensive. In the context of transformers, e is not only dependent on current token, but also all the future tokens and potentially the final reward (in RL). This incurs exploding complexity, which makes it difficult to approximate/learn.
+      What makes it worse, these future tokens are generally not available during inference time, unless the sequence is fully unrolled. As a compromise, we instead predict <em> e </em> by projecting input x with a linear layer and call it "key". That gives the basic formulation of most of forward fast weights. <br>
+      <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i W_ex_i (x_i^T x)$$</p>
+      This is obviously very problematic, since we are trying to approximate a rich and complex function with a simple linear layer. Fundamentally, it just does not make sense. One intuitive fix is actually to use MLP layers, which is in theory a universal function approximator. However, to reach the complexity of the backward function, the hidden layer width would have been too large and we might be better off running backpropagation. Remember, <strong> there is no such thing as a free lunch </strong>.
+      <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i \mathcal{F'}(x_i) (x_i^T x)$$</p>
+    </section>
 
-      <p>If $\Delta W$ decomposes into rank-1 contributions, we connect it to linear attention mechanisms:</p>
-      <p class="text-center">$$\mathcal{F}(x) = W_0x + \sum_i e_i (x_i'^T x) = W_0x + \text{LinearAttn}(E, X', x)$$</p>
+    <section>
+      <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">Miscellaneous and Caveats</h2>
+      Of course, above is an overly simplified view of training time fast weights. During training, there are a few more factors we would need to consider, for instance, momentum, learning scheduler and weight decays, which modify how fast weight memory is updated. In addition, different optimizers use different update rules, which also dictates how the fast weight memory gets updated. Explicitly writing them out would an interesting practice, which might provide incredible insights to both optimizer and memory design.
     </section>
 
     <section id="references" class="mt-16">
@@ -71,6 +85,8 @@
         </li>
         <li>Irie, K., Csordás, R., & Schmidhuber, J. (2022, June). <em>The dual form of neural networks revisited: Connecting test time predictions to training patterns via spotlights of attention</em>. In International Conference on Machine Learning (pp. 9639-9659). PMLR.</li>
         <li>Dai, D., Sun, Y., Dong, L., Hao, Y., Ma, S., Sui, Z., & Wei, F. (2022). <em>Why can gpt learn in-context? language models implicitly perform gradient descent as meta-optimizers</em>. arXiv preprint arXiv:2212.10559.</li>
+        <li>Komatsuzaki, A. [@arankomatsuzaki]. (2023, February 6). <br> <em>Actually, gradient descent can be seen as attention that applies beyond the model's context length! Let me explain why 🧵 👇 (1/N)<br> Ref: https://arxiv.org/abs/2202.05798 <br>https://arxiv.org/abs/2212.10559</em>.<br> X. https://x.com/arankomatsuzaki/status/1622666312219598864
+        <li>Wolpert, D. H., & Macready, W. G. (2002). <em> No free lunch theorems for optimization</em>. IEEE transactions on evolutionary computation, 1(1), 67-82.</li>  
       </ol>
     </section>
 
@@ -83,15 +99,15 @@
 
       <pre class="bg-zinc-100 text-zinc-800 p-4 rounded-lg overflow-x-auto text-sm"><code>
 @misc{liang2025fastweights,
-  title        = {The Ultimate Fast Weights},
-  author       = {Liang, Kaizhao},
-  year         = {2025},
-  howpublished = {\url{https://kyleliang919.github.io/The_Ultimate_Fast_Weights/}},
-  note         = {Accessed: \today}
+  title = {Your Linear Layers are Secretly Fast Weights},
+  author = {Liang, Kaizhao},
+  year = {2025},
+  url = {https://kyleliang919.github.io/The_Ultimate_Fast_Weights}
 }
-      </code></pre>
+    </code></pre>
     </section>
-
+    <section>
+    </section>
   </main>
 
   <footer class="mx-auto max-w-3xl px-6 pb-12 text-sm text-zinc-500">
