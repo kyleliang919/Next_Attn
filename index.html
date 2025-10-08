@@ -43,7 +43,7 @@
 
     <section>
       <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">So Why Hybrid Models?</h2>
-      <p>Modern LLMs are largely based on Self-Attention Transformers. I said largely because of recent models that incorporated both attention layers and linear attention (fast weight) variants. For example, Qwen3-Next mixes Attention Layers with Gated DeltaNet Layers in 3:1 ratio. These hybrid designs are intended to provide efficiency without sacrificing too much on modeling capability along sequence dimension. Ultimately, like many of the hybrid systems, it becomes a matter of <strong>trade-off</strong>. Compromises were made here and there, yet hard to make everyone happy.
+      <p>Modern LLMs are largely based on Self-Attention Transformers. I said largely because of recent models that incorporated both attention layers and linear attention (fast weight) variants. For example, Qwen3-Next mixes Attention Layers with Gated DeltaNet Layers in 1:3 ratio. These hybrid designs are intended to provide efficiency without sacrificing too much on modeling capability along sequence dimension. Ultimately, like many of the hybrid systems, it becomes a matter of <strong>trade-off</strong>. Compromises were made here and there, yet hard to make everyone happy.
       </p>
       <p>Setting efficiency aside, another purpose of fast weight is to enable models to learn continously. Imagine the model simply generates and reads in new tokens and its parameters get updated by those tokens at the same time. In principle, this is somewhat achieveable with the current sequence-level fast weight designs. However, it still feels <strong>limited</strong>, <strong>unnatural</strong> and more importantly <strong>inelegant</strong>.</p>
       <p>Then, "What are we going to do?" asked the young padawan. It turns out the answer has been hidden in the plain sight. We just don't know how to tap into its power, yet. </p>
@@ -75,6 +75,9 @@
     <section id="references" class="mt-16">
       <h2 class="text-2xl font-semibold border-b border-zinc-300 pb-2 mb-4">References</h2>
       <ol class="list-decimal pl-6 space-y-2 text-zinc-700">
+        <li>
+          Schlag, I., Irie, K., & Schmidhuber, J. (2021, July). <em> Linear transformers are secretly fast weight programmers </em>. In International conference on machine learning (pp. 9355-9366). PMLR.
+        </li>
         <li>
           Schmidhuber, J. (1992). <em>Learning to control fast-weight memories: An alternative to dynamic recurrent networks</em>. Neural Computation, 4(1), 131–139.
         </li>
